@@ -1,0 +1,19 @@
+# Keil MDK 用户文件与编译产物(源码 .uvprojx/.uvoptx 保留)
+MDK-ARM/*.uvguix.*
+MDK-ARM/*.bak
+MDK-ARM/Objects/
+MDK-ARM/Listings/
+MDK-ARM/*/*.o
+MDK-ARM/*/*.crf
+MDK-ARM/*/*.d
+MDK-ARM/*/*.axf
+MDK-ARM/*/*.dep
+MDK-ARM/*/*.map
+MDK-ARM/*/*.lnp
+MDK-ARM/*/*.lst
+MDK-ARM/*/*.htm
+MDK-ARM/*/*.build_log.htm
+
+# 本地工具配置(不提交)
+.claude/
+.mxproject
