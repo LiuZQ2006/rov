@@ -47,9 +47,16 @@ float PIDCalc(PID_Regulator_t *PIDInfo, float target, float feedback) {
     PIDInfo->ref = target;
     PIDInfo->err[3] = PIDInfo->ref - PIDInfo->fdb;
     PIDInfo->componentKp = PIDInfo->err[3] * PIDInfo->kp;
-    PIDInfo->errSum += PIDInfo->err[3];
-    INRANGE(PIDInfo->errSum, -1 * PIDInfo->componentKiMax / PIDInfo->ki, PIDInfo->componentKiMax / PIDInfo->ki);
 
+    if (PIDInfo->ki != 0.0f) {
+    PIDInfo->errSum += PIDInfo->err[3];
+    INRANGE(PIDInfo->errSum, -PIDInfo->componentKiMax / PIDInfo->ki,
+            PIDInfo->componentKiMax / PIDInfo->ki);
+    } 
+    else {
+    PIDInfo->errSum = 0.0f;   /* 纯P: 不累积积分 */
+    }
+    
     PIDInfo->componentKi = PIDInfo->errSum * PIDInfo->ki;
     PIDInfo->componentKd = (PIDInfo->err[3] - PIDInfo->err[2]) * PIDInfo->kd;
 

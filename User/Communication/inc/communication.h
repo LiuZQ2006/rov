@@ -5,6 +5,7 @@
 #include "usart.h"
 
 extern uint8_t mode_flag;
+extern uint8_t code[64];
 
 #define STOP 0x00
 #define DOWN 0x01

@@ -13,6 +13,9 @@ MDK-ARM/*/*.lnp
 MDK-ARM/*/*.lst
 MDK-ARM/*/*.htm
 MDK-ARM/*/*.build_log.htm
+MDK-ARM/rov_low/
+MDK-ARM/RTE/
+MDK-ARM/*.lst
 
 # 本地工具配置(不提交)
 .claude/

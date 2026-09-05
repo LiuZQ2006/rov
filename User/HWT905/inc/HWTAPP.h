@@ -8,17 +8,12 @@
 #include "main.h"
 #include "tim.h"
 
-#define ACC_UPDATE		0x01
-#define GYRO_UPDATE		0x02
-#define ANGLE_UPDATE	0x04
-#define MAG_UPDATE		0x08
-#define TEMP_UPDATE     0x10
-#define READ_UPDATE		0x80
 
 #define DEG2RAD  0.01745329252f   
 
 
-extern float fAcc[3], fGyro[3], fAngle[3],fTemp;
+extern volatile float fAcc[3], fGyro[3], fAngle[3],fTemp;
+extern volatile uint8_t data_ready_flag;
 
 void HWT_data(void);
 void HWT_Tick(void);

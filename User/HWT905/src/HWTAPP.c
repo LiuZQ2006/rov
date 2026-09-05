@@ -2,10 +2,10 @@
 
 
 //这里是一些全局变量的定义啥的
-float fAcc[3], fGyro[3], fAngle[3],fTemp;
+volatile float fAcc[3], fGyro[3], fAngle[3],fTemp;
 static int i,iBuff;
 static uint8_t g_imu_rx_buf[128]; 
-
+volatile uint8_t data_ready_flag = 0;   /* ISR写、主循环读 → 必须volatile */
 
 static volatile int s_query_inflight = 0;   /* 1=已发查询、在等应答 */
 static volatile int s_new_data = 0;         /* 1=收到一帧新数据    */
@@ -33,7 +33,7 @@ static void CopeSensorData(uint32_t uiReg, uint32_t uiRegNum)
 
 void HWT_Init(){
     HAL_TIM_Base_Start_IT(&htim14);
-	WitInit(WIT_PROTOCOL_905x_MODBUS, 0x50);
+	WitInit(WIT_PROTOCOL_MODBUS, 0x50);
 	WitSerialWriteRegister(SensorUartSend);
 	WitRegisterCallBack(CopeSensorData);
 	HAL_UARTEx_ReceiveToIdle_IT(&huart2, g_imu_rx_buf, 128);
@@ -47,7 +47,7 @@ void HWT_Tick(void)
         /* 收完才发下一帧 */
         if (!s_query_inflight)
         {
-            WitReadReg(AX, 16);             /* 发查询 */
+            WitReadReg(AX, 12);             /* 发查询 */
             s_query_inflight = 1;
             s_query_tick = HAL_GetTick();
         }
@@ -63,12 +63,11 @@ void HWT_data(void){
             s_new_data = 0;
             for(i = 0; i < 3; i++)
             {
-                fAcc[i]   = (float)sReg[AX+i]   / 32768.0f * 16.0f;
-                fGyro[i]  = (float)sReg[GX+i]   / 32768.0f * 2000.0f*DEG2RAD;
-                iBuff     = (((uint32_t)sReg[HRoll + 2*i]) << 16) | ((uint16_t)sReg[LRoll + 2*i]);
-                fAngle[i] = (float)iBuff / 1000.0f*DEG2RAD;
+                fAcc[i] = sReg[AX+i] / 32768.0f * 16.0f;
+				fGyro[i] = sReg[GX+i] / 32768.0f * 2000.0f*DEG2RAD;
+				fAngle[i] = sReg[Roll+i] / 32768.0f * 180.0f*DEG2RAD;
             }
-            fTemp = (float)sReg[TEMP905x] / 100.0f;
+            data_ready_flag = 1;
 //            printf("acc:%.3f %.3f %.3f gyro:%.3f %.3f %.3f angle:%.3f %.3f %.3f temp:%.1f\r\n",
 //                fAcc[0],fAcc[1],fAcc[2], fGyro[0],fGyro[1],fGyro[2],
 //                fAngle[0],fAngle[1],fAngle[2], fTemp);
@@ -87,6 +86,8 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 	HAL_UARTEx_ReceiveToIdle_IT(&huart2,g_imu_rx_buf,sizeof(g_imu_rx_buf));
 	}
 }
+
+
 
 int fputc(int a,FILE*f)
 {

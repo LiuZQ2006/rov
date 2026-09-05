@@ -21,13 +21,10 @@ extern "C" {
 
 #define WIT_DATA_BUFF_SIZE  256
 
-#define WIT_PROTOCOL_NORMAL        0
-#define WIT_PROTOCOL_MODBUS        1
-#define WIT_PROTOCOL_CAN           2
-#define WIT_PROTOCOL_I2C           3
-#define WIT_PROTOCOL_JY61          4
-#define WIT_PROTOCOL_905x_MODBUS   5
-#define WIT_PROTOCOL_905x_CAN      6
+#define WIT_PROTOCOL_NORMAL 0
+#define WIT_PROTOCOL_MODBUS 1
+#define WIT_PROTOCOL_CAN    2
+#define WIT_PROTOCOL_I2C    3
 
 
 /* serial function */
@@ -126,9 +123,6 @@ int32_t WitSetBandwidth(int32_t uiBaudWidth);
 int32_t WitSetOutputRate(int32_t uiRate);
 int32_t WitSetContent(int32_t uiRsw);
 int32_t WitSetCanBaud(int32_t uiBaudIndex);
-int32_t WitSaveParameter(void);
-int32_t WitSetForReset(void);
-int32_t WitCaliRefAngle(void);
 
 char CheckRange(short sTemp,short sMin,short sMax);
 
