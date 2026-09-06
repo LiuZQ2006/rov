@@ -1,6 +1,7 @@
-#include "usart.h"
+#include "communication.h"
 
-uint8_t mode_flag = 0;
+uint8_t flag = 1;            
+uint8_t moveflag = HORI_STOP;  
 uint8_t data_ready=0;
 uint8_t code[64] = {0};
 

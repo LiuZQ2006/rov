@@ -5,7 +5,7 @@
 volatile float fAcc[3], fGyro[3], fAngle[3],fTemp;
 static int i,iBuff;
 static uint8_t g_imu_rx_buf[128]; 
-volatile uint8_t data_ready_flag = 0;   /* ISR写、主循环读 → 必须volatile */
+volatile uint8_t data_ready_flag = 0;
 
 static volatile int s_query_inflight = 0;   /* 1=已发查询、在等应答 */
 static volatile int s_new_data = 0;         /* 1=收到一帧新数据    */

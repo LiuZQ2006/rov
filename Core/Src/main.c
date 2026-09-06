@@ -26,7 +26,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "HWTAPP.h"
-
+#include "pwm.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -94,8 +94,12 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM14_Init();
   MX_USB_DEVICE_Init();
+  MX_TIM1_Init();
+  MX_TIM6_Init();
+  MX_TIM8_Init();
   /* USER CODE BEGIN 2 */
   HWT_Init();
+  pid_init();
   printf("\r\n[BOOT] HWT init done\r\n");   
 	printf("ok\r\n");
   /* USER CODE END 2 */
@@ -104,12 +108,16 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    if(data_ready_flag){
+    /*if(data_ready_flag){
         data_ready_flag = 0;
       printf("acc:%.3f %.3f %.3f gyro:%.3f %.3f %.3f angle:%.3f %.3f %.3f temp:%.1f\r\n",
                 fAcc[0],fAcc[1],fAcc[2], fGyro[0],fGyro[1],fGyro[2],
                 fAngle[0],fAngle[1],fAngle[2], fTemp);
-    }
+    }*/
+    if(PID_ready){
+      printf("roll_pid:%.3f pitch_pid:%.3f yaw_pid:%.3f\r\n", RollOutPID.err[3], PitchOutPID.err[3], YawOutPID.err[3]);
+			pid_correct();
+		}
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

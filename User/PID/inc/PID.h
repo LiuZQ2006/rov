@@ -35,6 +35,7 @@ void PID_Reset(PID_Regulator_t *PIDInfo);//对应reset
 void PID_Reload(PID_Regulator_t *PIDInfo,PID_Regulator_t *pidRegulator);//对应第二个reset，带参那个
 float PIDCalc(PID_Regulator_t *PIDInfo, float target, float feedback);//对应计算pid输出
 float PIDCalcMAX(PID_Regulator_t *PIDInfo, float target, float feedback, float max);//对应计算pid输出，带最大输出限制
-
+float normalize(float a);
+float PIDCalcYaw(PID_Regulator_t *PIDInfo, float target, float feedback);
 
 #endif
