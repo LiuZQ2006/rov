@@ -21,10 +21,12 @@
 
 
 
+#define ANGLE_DEADBAND (5.0f * DEG2RAD)   // 角度死区：±5°以内不纠正角度
+
+
+
+
 extern PID_Regulator_t PitchInPID, PitchOutPID, RollInPID, RollOutPID, YawInPID, YawOutPID;
-
-
-
 
 
 
@@ -41,16 +43,19 @@ extern uint16_t vertPWM_base; // 垂直公共基线(上浮~下潜缓动)
 extern uint16_t vertPWM[4];   // [0]=桨0 [1]=桨1 [2]=桨2 [3]=桨3
 extern uint16_t horiPWM[4];   // [0]=左前 [1]=左后 [2]=右前 [3]=右后
 
-/* ---------- 函数(调用约定见 pwm.c 顶部) ---------- */
-void pid_init(void);                      
+
+void pid_init(void);                  
+void Pwm_init(void);    
 
 void pid_calculate_all(void);
 
 void vertical_action(void);               // 上浮/下潜 基线缓动
 void horizontal_action(void);             // moveflag -> 水平基值
+void action_all(void);
 
 void vert_pid_correct(void);              // 垂直防侧翻 -> TIM1
 void hor_pid_correct(void);               // 水平基值+偏航 -> TIM8
 void pid_correct(void);                 
 
+void YAW_set(void);
 #endif

@@ -54,6 +54,7 @@ float PIDCalc(PID_Regulator_t *PIDInfo, float target, float feedback) {
     PIDInfo->fdb = feedback;
     PIDInfo->ref = target;
     PIDInfo->err[3] = PIDInfo->ref - PIDInfo->fdb;
+    if(PIDInfo->err[3] < 0.01f&&PIDInfo->err[3]>-0.01f) PIDInfo->err[3] = 0;
     PIDInfo->componentKp = PIDInfo->err[3] * PIDInfo->kp;
 
     if (PIDInfo->ki != 0.0f) {
@@ -83,6 +84,7 @@ float PIDCalcYaw(PID_Regulator_t *PIDInfo, float target, float feedback) {
     PIDInfo->fdb = feedback;
     PIDInfo->ref = target;
     PIDInfo->err[3] = PIDInfo->ref - PIDInfo->fdb;
+    if(PIDInfo->err[3] < 0.01f&&PIDInfo->err[3]>-0.01f) PIDInfo->err[3] = 0;
     PIDInfo->err[3] = normalize(PIDInfo->err[3]);
     PIDInfo->componentKp = PIDInfo->err[3] * PIDInfo->kp;
     if (PIDInfo->ki != 0.0f) {

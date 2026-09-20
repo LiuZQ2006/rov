@@ -27,6 +27,7 @@
 /* USER CODE BEGIN Includes */
 #include "HWTAPP.h"
 #include "pwm.h"
+#include "communication.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -47,7 +48,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+extern uint16_t vertPWM[4];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -100,6 +101,8 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HWT_Init();
   pid_init();
+  Pwm_init();
+  Target_reset();
   printf("\r\n[BOOT] HWT init done\r\n");   
 	printf("ok\r\n");
   /* USER CODE END 2 */
@@ -114,8 +117,12 @@ int main(void)
                 fAcc[0],fAcc[1],fAcc[2], fGyro[0],fGyro[1],fGyro[2],
                 fAngle[0],fAngle[1],fAngle[2], fTemp);
     }*/
+    code_analyze();
+    action_all();
     if(PID_ready){
-      printf("roll_pid:%.3f pitch_pid:%.3f yaw_pid:%.3f\r\n", RollOutPID.err[3], PitchOutPID.err[3], YawOutPID.err[3]);
+//printf("roll_pid:%.3f pitch_pid:%.3f yaw_pid:%.3f\r\n", RollOutPID.err[3], PitchOutPID.err[3], YawOutPID.err[3]);
+		
+			printf("pwm1:%d, pwm2:%d, pwm3:%d, pwm4:%d\r\n", vertPWM[0], vertPWM[1], vertPWM[2], vertPWM[3]);
 			pid_correct();
 		}
     /* USER CODE END WHILE */

@@ -1,6 +1,7 @@
 #include "HWTAPP.h"
 
 
+
 //这里是一些全局变量的定义啥的
 volatile float fAcc[3], fGyro[3], fAngle[3],fTemp;
 static int i,iBuff;
@@ -73,6 +74,16 @@ void HWT_data(void){
 //                fAngle[0],fAngle[1],fAngle[2], fTemp);
         }
 }
+
+void Target_reset(void){
+    while(!data_ready_flag);
+    Target_roll = fAngle[0];
+    Target_pitch = fAngle[1];
+    Target_yaw = fAngle[2];
+    data_ready_flag = 0;
+}
+
+
 
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 {
